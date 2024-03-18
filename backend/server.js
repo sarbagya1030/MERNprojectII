@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { Console } from "console";
+import { Console, error } from "console";
+import connect from "./database/conn.js";
+import router from "./router/route.js";
 
 const app = express();
 
@@ -18,7 +20,18 @@ app.get("/", (req, res) => {
   res.status(201).json("Home GET Request");
 });
 
-//start server
-app.listen(port, () => {
-  console.log(`Server connected to http://localhost:${port}`);
-});
+//api routers
+app.use("/api", router);
+
+//start server only when valid connection
+async function startServer() {
+  try {
+    await connect(); // Connect to the database
+    app.listen(port, () => {
+      console.log(`Server connected to http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error("Error starting server:", error);
+  }
+}
+startServer();
