@@ -37,7 +37,7 @@ export default function Register() {
       <div className="flex justify-center items-center h-screen">
         <div
           className={styles.glass}
-          style={{ width: "45%", paddingTop: "3em" }}
+          style={{ width: "55%", paddingTop: "3em" }}
         >
           <div className="title flex flex-col items-center">
             <h4 className="text-5xl font-bold">Register</h4>
