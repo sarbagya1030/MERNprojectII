@@ -3,8 +3,8 @@ import cors from "cors";
 import morgan from "morgan";
 import { Console, error } from "console";
 import connect from "./database/conn.js";
-import router from "./router/route.js";
-
+import appRoutes from "./router/route.js";
+import productRoutes from "./router/routeProduct.js";
 const app = express();
 
 //middleware
@@ -21,7 +21,8 @@ app.get("/", (req, res) => {
 });
 
 //api routers
-app.use("/api", router);
+app.use("/api", appRoutes);
+app.use("/api/products", productRoutes);
 
 //start server only when valid connection
 async function startServer() {

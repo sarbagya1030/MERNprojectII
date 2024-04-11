@@ -1,14 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import avatar from "../assets/profile.jpg";
 import styles from "../styles/Username.module.css";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
 import { passwordValidate } from "../helper/validate.js";
 import useFetch from "../hooks/fetch.hook.js";
 import { useAuthStore } from "../store/store.js";
+import { verifyPassword } from "../helper/helper.js";
 
 export default function Password() {
+  const navigate = useNavigate();
   const { username } = useAuthStore((state) => state.auth);
   const [{ isLoading, apiData, serverError }] = useFetch(`/user/${username}`);
   const formik = useFormik({
@@ -19,7 +21,21 @@ export default function Password() {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      console.log(values);
+      let loginPromise = verifyPassword({
+        username,
+        password: values.password,
+      });
+      toast.promise(loginPromise, {
+        loading: "Checking...",
+        success: <b>Login Successful...!</b>,
+        error: <b>Password didn't Match!</b>,
+      });
+
+      loginPromise.then((res) => {
+        let { token } = res.data;
+        localStorage.setItem("token", token);
+        navigate("/profile");
+      });
     },
   });
 
@@ -32,7 +48,10 @@ export default function Password() {
       <Toaster position="top-center" reverseOrder={false}></Toaster>
 
       <div className="flex justify-center items-center h-screen">
-        <div className={styles.glass}>
+        <div
+          className={`${styles.glass} md:w-4/5 lg:w-3/5 xl:w-2/5`}
+          style={{ paddingTop: "3em" }}
+        >
           <div className="title flex flex-col items-center">
             <h4 className="text-5xl font-bold">
               Hello {apiData?.firstName || apiData?.username}
@@ -59,14 +78,14 @@ export default function Password() {
                 placeholder="Password"
               ></input>
               <button className={styles.btn} type="submit">
-                Sign In
+                Login
               </button>
             </div>
 
             <div className="text-center py-4">
               <span className="text-gray-500">
                 Forgot Password?
-                <Link className="text-red-500" to="/recovery">
+                <Link className="text-purple-600" to="/recovery">
                   Recover Now
                 </Link>
               </span>

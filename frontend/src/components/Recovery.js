@@ -1,12 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import avatar from "../assets/profile.jpg";
 import styles from "../styles/Username.module.css";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { useAuthStore } from "../store/store.js";
 import { useFormik } from "formik";
 import { passwordValidate } from "../helper/validate.js";
+import { generateOTP, verifyOTP } from "../helper/helper.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Recovery() {
+  const { username } = useAuthStore((state) => state.auth);
+  const [OTP, setOTP] = useState();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    generateOTP(username).then((OTP) => {
+      // console.log(OTP);
+
+      if (OTP) return toast.success("OTP has been sent to your email!");
+      return toast.error("Problem while generating OTP!");
+    });
+  }, [username]);
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    try {
+      let { status } = await verifyOTP({ username, code: OTP });
+      if (status === 201) {
+        toast.success("Verified Successfully");
+        return navigate("/reset");
+      }
+    } catch (error) {
+      return toast.error("Wrong OTP!!");
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -18,6 +48,22 @@ export default function Recovery() {
       console.log(values);
     },
   });
+
+  //create handler function of resendOTP
+  function resendOTP() {
+    let sendPromise = generateOTP(username);
+
+    toast.promise(sendPromise, {
+      loading: "Sending...",
+      success: <b>OTP has been sent to your email.</b>,
+      error: <b>Could not Send OTP. Please try again later!!</b>,
+    });
+
+    sendPromise.then((OTP) => {
+      console.log(OTP);
+    });
+  }
+
   return (
     <div className="container mx-auto">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
@@ -31,7 +77,7 @@ export default function Recovery() {
             </span>
           </div>
 
-          <form className="pt-20">
+          <form className="pt-20" onSubmit={onSubmit}>
             <div className="textbox flex flex-col items-center gap-6">
               <div className="input text-center">
                 <span className="py-4 text-sm text-left text-gray-500">
@@ -39,6 +85,7 @@ export default function Recovery() {
                 </span>
 
                 <input
+                  onChange={(e) => setOTP(e.target.value)}
                   className={styles.textbox}
                   type="number"
                   placeholder="OTP"
@@ -49,14 +96,16 @@ export default function Recovery() {
                 Sign In
               </button>
             </div>
-
-            <div className="text-center py-4">
-              <span className="text-gray-500">
-                Can't get OTP?
-                <button className="text-red-500">Resend</button>
-              </span>
-            </div>
           </form>
+
+          <div className="text-center py-4">
+            <span className="text-gray-500">
+              Can't get OTP?
+              <button onClick={resendOTP} className="text-purple-600">
+                Resend
+              </button>
+            </span>
+          </div>
         </div>
       </div>
     </div>

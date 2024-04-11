@@ -29,6 +29,8 @@ export default function Register() {
         toast.dismiss(loadingToastId);
 
         toast.success(<b>Registered Successfully...!</b>);
+
+        navigate("/");
       } catch (error) {
         toast.error(<b>Could not Register.</b>);
       }
@@ -45,14 +47,14 @@ export default function Register() {
     <div className="container mx-auto">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
 
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center min-h-screen">
         <div
-          className={styles.glass}
-          style={{ width: "55%", paddingTop: "3em" }}
+          className={`${styles.glass} md:w-4/5 lg:w-3/5 xl:w-2/5`}
+          style={{ paddingTop: "3em" }}
         >
           <div className="title flex flex-col items-center">
             <h4 className="text-5xl font-bold">Register</h4>
-            <span className="py-4 text-xl w-2/3 text-center text-gray-500">
+            <span className="py-4 text-xl w-2/3 text-center text-gray-600">
               Happy to join you!
             </span>
           </div>
@@ -90,7 +92,7 @@ export default function Register() {
               <input
                 {...formik.getFieldProps("password")}
                 className={styles.textbox}
-                type="text"
+                type="password"
                 placeholder="Password*"
               ></input>
               <button className={styles.btn} type="submit">
@@ -100,8 +102,8 @@ export default function Register() {
 
             <div className="text-center py-4">
               <span className="text-gray-500">
-                Already Register?
-                <Link className="text-red-500" to="/username">
+                Already Registered?
+                <Link className="text-purple-600" to="/username">
                   Login Now
                 </Link>
               </span>

@@ -33,7 +33,10 @@ export default function Username() {
       <Toaster position="top-center" reverseOrder={false}></Toaster>
 
       <div className="flex justify-center items-center h-screen">
-        <div className={styles.glass}>
+        <div
+          className={`${styles.glass} md:w-4/5 lg:w-3/5 xl:w-2/5`}
+          style={{ paddingTop: "3em" }}
+        >
           <div className="title flex flex-col items-center">
             <h4 className="text-5xl font-bold">Hello again</h4>
             <span className="py-4 text-xl w-2/3 text-center text-gray-500">
@@ -58,14 +61,14 @@ export default function Username() {
                 placeholder="Username"
               ></input>
               <button className={styles.btn} type="submit">
-                Sign In
+                Let's Go
               </button>
             </div>
 
             <div className="text-center py-4">
               <span className="text-gray-500">
                 Not a Member
-                <Link className="text-red-500" to="/register">
+                <Link className="text-purple-600" to="/register">
                   Register Now
                 </Link>
               </span>
