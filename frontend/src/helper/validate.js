@@ -91,3 +91,61 @@ function emailVerify(error = {}, values) {
 
   return error;
 }
+
+// validate add product form
+export async function productValidation(values) {
+  const errors = {};
+
+  // Product Name validation
+  if (!values.name) {
+    errors.name = toast.error("Product Name is required");
+  }
+
+  // Price validation
+  if (!values.price) {
+    errors.price = toast.error("Price is required");
+  } else if (isNaN(values.price) || values.price <= 0) {
+    errors.price = toast.error("Price must be a valid positive number");
+  }
+
+  // Quantity validation
+  if (!values.quantity_available) {
+    errors.quantity_available = toast.error("Quantity is required");
+  } else if (
+    isNaN(values.quantity_available) ||
+    values.quantity_available <= 0
+  ) {
+    errors.quantity_available = toast.error(
+      "Quantity must be a valid positive number"
+    );
+  }
+
+  // Category validation
+  if (!values.categories) {
+    errors.categories = toast.error("Category is required");
+  }
+
+  return errors;
+}
+
+// Validate updated product form
+export async function updateProductValidation(values) {
+  const errors = {};
+
+  // Price validation
+  if (values.price && (isNaN(values.price) || values.price <= 0)) {
+    errors.price = toast.error("Price must be a valid positive number");
+  }
+
+  // Quantity validation
+  if (
+    values.quantity_available &&
+    (isNaN(values.quantity_available) || values.quantity_available <= 0)
+  ) {
+    errors.quantity_available = toast.error(
+      "Quantity must be a valid positive number"
+    );
+  }
+
+  return errors;
+}

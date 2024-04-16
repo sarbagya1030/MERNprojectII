@@ -24,12 +24,12 @@ export const ProductSchema = new mongoose.Schema(
     },
     product_images: {
       type: [String],
-      required: [true, "Product images required"],
+      required: false,
     },
     posted_by: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: false,
+      required: [true, "Posted_by is mandatory"],
     },
   },
   {

@@ -1,11 +1,4 @@
-/* .glass {
-  @apply h-5/6 w-5/6;
-}
-
-.profile_img {
-  @apply w-40 cursor-pointer;
-}
-
-.textbox {
-  @apply w-3/4;
+/* .image_img {
+  @apply border-4 border-gray-100 w-[130px] rounded-full shadow-lg cursor-pointer;
+  @apply hover:border-gray-200;
 } */

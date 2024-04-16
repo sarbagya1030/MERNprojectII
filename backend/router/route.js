@@ -17,6 +17,7 @@ router
 router.route("/login").post(controller.verifyUser, controller.login); //login in app
 
 //GET method
+router.route("/getusers").get(controller.getAllUsers);
 router.route("/user/:username").get(controller.getUser); //user with the username
 router
   .route("/generateOTP")
@@ -29,5 +30,8 @@ router.route("/updateuser").put(Auth, controller.updateUser); //to update user p
 router
   .route("/resetPassword")
   .put(controller.verifyUser, controller.resetPassword); //to reset password
+
+//DELETE method
+router.route("/deleteuser/:id").delete(controller.deleteUser); // to delete user
 
 export default router;

@@ -30,7 +30,7 @@ export default function Register() {
 
         toast.success(<b>Registered Successfully...!</b>);
 
-        navigate("/");
+        navigate("/username");
       } catch (error) {
         toast.error(<b>Could not Register.</b>);
       }

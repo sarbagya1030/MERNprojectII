@@ -21,21 +21,21 @@ export default function Password() {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      let loginPromise = verifyPassword({
-        username,
-        password: values.password,
-      });
-      toast.promise(loginPromise, {
-        loading: "Checking...",
-        success: <b>Login Successful...!</b>,
-        error: <b>Password didn't Match!</b>,
-      });
+      try {
+        const response = await verifyPassword({
+          username,
+          password: values.password,
+        });
 
-      loginPromise.then((res) => {
-        let { token } = res.data;
+        const { token } = response.data;
         localStorage.setItem("token", token);
-        navigate("/profile");
-      });
+
+        navigate("/dashboard");
+        toast.success(<b>Login Successful...!</b>);
+      } catch (error) {
+        console.error("Error verifying password:", error);
+        toast.error(<b>Password didn't Match!</b>);
+      }
     },
   });
 

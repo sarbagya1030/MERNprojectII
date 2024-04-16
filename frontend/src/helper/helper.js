@@ -22,6 +22,17 @@ export async function authenticate(username) {
   }
 }
 
+//getallusers
+export async function getAllUsers() {
+  try {
+    const response = await axios.get("http://localhost:8080/api/getusers");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw new Error("Failed to fetch users");
+  }
+}
+
 //get userdetails
 export async function getUser({ username }) {
   try {
@@ -79,6 +90,20 @@ export async function updateUser(response) {
     return Promise.resolve({ data });
   } catch (error) {
     return Promise.reject({ error: "Couldn't update profile !!" });
+  }
+}
+
+//delete user
+export async function deleteUser(userId) {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.delete(`/api/deleteUser/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to delete user");
   }
 }
 

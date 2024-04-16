@@ -2,17 +2,27 @@ import jwt from "jsonwebtoken";
 import ENV from "../config.js";
 
 export default async function Auth(req, res, next) {
+  console.log("Auth middleware called");
   try {
-    //acces authorize header to validate request
+    // console.log("Authorization Header:", req.headers.authorization);
+
+    if (!req.headers.authorization) {
+      throw new Error("Authorization header missing");
+    }
+
     const token = req.headers.authorization.split(" ")[1];
+    // console.log("Token:", token);
 
-    //retrieve user details of logged in user
     const decodedtoken = jwt.verify(token, ENV.JWT_SECRET);
+    // console.log("Decoded Token:", decodedtoken);
 
+    // Attach the decoded token to the request object
     req.user = decodedtoken;
+
+    // Call the next middleware
     next();
   } catch (error) {
-    //console.log(error);
+    console.error("Authentication Error:", error);
     res.status(401).json({ error: "Authentication Failed!" });
   }
 }

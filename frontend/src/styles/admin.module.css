@@ -1,0 +1,8 @@
+.navigation {
+  background: linear-gradient(
+    to bottom,
+    rgba(191, 144, 255, 0.5) 10%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  border-radius: 16px;
+}

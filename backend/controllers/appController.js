@@ -92,6 +92,9 @@ export async function login(req, res) {
       return res.status(400).send({ error: "Password doesn't match" });
     }
 
+    // Retrieve user's ID from database
+    const userId = user._id;
+
     const token = jwt.sign(
       {
         userId: user._id,
@@ -104,11 +107,24 @@ export async function login(req, res) {
     return res.status(200).send({
       msg: "Login Successful...!",
       username: user.username,
+      user_id: userId,
       token,
     });
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).send({ error });
+  }
+}
+
+//GET : http://localhost:8080/api/getusers
+export async function getAllUsers(req, res) {
+  try {
+    const users = await UserModel.find();
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 }
 
@@ -154,6 +170,29 @@ export async function updateUser(req, res) {
     return res.status(500).send({ error: "Internal Server Error" });
   }
 }
+
+// DELETE : http://localhost:8080/api/deleteuser
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await UserModel.findByIdAndDelete(userId);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 //GET : http://localhost:8080/api/generateOTP
 export async function generateOTP(req, res) {

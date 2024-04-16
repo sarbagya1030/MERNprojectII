@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
 import { profileValidation } from "../helper/validate.js";
 import convertToBase64 from "../helper/convert.js";
+import { FiArrowLeft } from "react-icons/fi";
 
 export default function Profile() {
   const [file, setFile] = useState();
@@ -148,6 +149,10 @@ export default function Profile() {
               </span>
             </div>
           </form>
+
+          <Link to="/dashboard" className={styles.backBtn}>
+            <FiArrowLeft size={24} />
+          </Link>
         </div>
       </div>
     </div>
