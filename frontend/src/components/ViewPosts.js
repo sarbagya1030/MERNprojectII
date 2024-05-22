@@ -62,7 +62,7 @@ export default function ViewPosts() {
               <div className="mt-2 text-sm text-gray-600">
                 <p>Available Quantity: {product.quantity_available}</p>
                 <p>Category: {product.categories.join(", ")}</p>
-                <p>Posted By: {product.posted_by}</p>
+                {/* <p>Posted By: {product.posted_by}</p> */}
               </div>
             </div>
 

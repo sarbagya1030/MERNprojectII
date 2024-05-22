@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { createProduct } from "../helper/producthelper.js";
 import { Link, useNavigate } from "react-router-dom";
-import Dashboard from "../components/Dashboard.js";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "../styles/Username.module.css";

@@ -128,6 +128,28 @@ export async function getAllUsers(req, res) {
   }
 }
 
+// GET: http://localhost:8080/api/user/id/:id
+export async function getUserById(req, res) {
+  const { id } = req.params;
+
+  try {
+    if (!id) {
+      return res.status(400).send({ error: "User ID is required" });
+    }
+
+    const user = await UserModel.findById(id).exec();
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+    const { password, ...rest } = user.toObject();
+    return res.status(200).send(rest);
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    return res.status(500).send({ error: "Internal Server Error" });
+  }
+}
+
 //GET : http://localhost:8080/api/user/example123
 export async function getUser(req, res) {
   const { username } = req.params;

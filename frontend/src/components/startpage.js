@@ -25,14 +25,14 @@ export default function StartPage() {
                 </a>
               </li>
 
-              <li class="group relative">
+              {/* <li class="group relative">
                 <a
                   class="block whitespace-nowrap px-2 py-2 text-sm text-slate-900 no-underline transition hover:text-slate-900 dark:text-slate-50 dark:hover:text-slate-50"
                   href="/contact"
                 >
                   Contact
                 </a>
-              </li>
+              </li> */}
 
               <li class="group relative">
                 <Link

@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Product from "../model/Product.model.js";
+import Review from "../model/Review.model.js";
 import mongoose from "mongoose";
 import fs from "fs";
 // import Auth from "../middleware/auth.js";
@@ -153,4 +154,71 @@ export const deleteProduct = asyncHandler(async (req, res) => {
 
   await Product.findByIdAndDelete(id);
   res.status(200).json({ message: "Product deleted successfully" });
+});
+
+// POST: http://localhost:8080/api/products/addReview/:id
+export const addReview = asyncHandler(async (req, res) => {
+  const { id: productId } = req.params;
+  const { userId, reviewContent } = req.body;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      res.status(400);
+      throw new Error("Invalid product ID");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(400);
+      throw new Error("Invalid user ID");
+    }
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+
+    if (!product.reviews) {
+      product.reviews = [];
+    }
+
+    const review = new Review({
+      userId,
+      productId,
+      review: reviewContent,
+    });
+
+    await review.save();
+
+    product.reviews.push(review._id);
+
+    const updatedProduct = await product.save();
+
+    res.status(200).json({
+      message: "Review added successfully",
+      product: updatedProduct,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET: http://localhost:8080/api/products/getReviewsByProductId/:id
+export const getReviewsByProductId = asyncHandler(async (req, res) => {
+  const { id: productId } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      res.status(400);
+      throw new Error("Invalid product ID");
+    }
+
+    const reviews = await Review.find({ productId });
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });

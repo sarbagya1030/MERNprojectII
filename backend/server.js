@@ -5,6 +5,7 @@ import { Console, error } from "console";
 import connect from "./database/conn.js";
 import appRoutes from "./router/route.js";
 import productRoutes from "./router/routeProduct.js";
+
 const app = express();
 
 //middleware

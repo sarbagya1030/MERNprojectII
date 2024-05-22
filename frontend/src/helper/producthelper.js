@@ -97,3 +97,37 @@ export async function deleteProduct(productId) {
     throw new Error("Couldn't delete product");
   }
 }
+
+//function to post review
+export async function postReview(productId, userId, reviewContent) {
+  try {
+    const authToken = await localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+    const response = await axios.post(
+      `/api/products/addReview/${productId}`,
+      { userId, reviewContent },
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error posting review:", error);
+    throw new Error("Error posting review");
+  }
+}
+
+// Function to get reviews by product ID
+export async function getReviewsByProductId(productId) {
+  try {
+    const response = await axios.get(
+      `/api/products/getReviewsByProductId/${productId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reviews by product ID:", error);
+    throw new Error("Error fetching reviews by product ID");
+  }
+}

@@ -4,13 +4,13 @@ import toast, { Toaster } from "react-hot-toast";
 import styles from "../styles/Username.module.css";
 import { FiArrowLeft } from "react-icons/fi";
 import avatar from "../assets/add.png";
-import { updateProduct } from "../helper/producthelper.js";
+import { updateProduct, deleteProduct } from "../helper/producthelper.js";
 import { updateProductValidation } from "../helper/validate.js";
 import useFetchProductId from "../hooks/fetchProduct.hook.js";
 
 export default function UpdateProduct() {
   const { productId } = useParams();
-  // console.log("productId:", productId);
+
   const [updatedProductData, setUpdatedProductData] = useState({
     name: "",
     description: "",
@@ -43,9 +43,7 @@ export default function UpdateProduct() {
     }));
   };
 
-  const handleFileChange = (e) => {
-    // Implement file upload logic here
-  };
+  const handleFileChange = (e) => {};
 
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
@@ -57,11 +55,19 @@ export default function UpdateProduct() {
         return;
       }
 
-      const updatedProduct = await updateProduct(productId, updatedProductData);
-
+      await updateProduct(productId, updatedProductData);
       toast.success("Product updated successfully");
     } catch (error) {
       toast.error("Failed to update product");
+    }
+  };
+
+  const handleDeleteProduct = async () => {
+    try {
+      await deleteProduct(productId);
+      toast.success("Product deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete product");
     }
   };
 
@@ -115,7 +121,7 @@ export default function UpdateProduct() {
               <select
                 name="categories"
                 id="categories"
-                className={` ${styles.select}`}
+                className={styles.select}
                 value={updatedProductData.categories}
                 onChange={handleInputChange}
               >
@@ -145,6 +151,13 @@ export default function UpdateProduct() {
               </div>
               <button className={styles.btn} type="submit">
                 Update
+              </button>
+              <button
+                type="button"
+                className="border bg-red-500 hover:bg-red-700 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center"
+                onClick={handleDeleteProduct}
+              >
+                Delete
               </button>
             </div>
           </form>

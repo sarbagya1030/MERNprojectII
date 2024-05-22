@@ -89,7 +89,7 @@ export default function DeleteUser() {
           </ul>
         </div>
       </nav>
-      3
+
       <div className="container mx-auto px-8 py-8 sm:px-12 mt-8">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">

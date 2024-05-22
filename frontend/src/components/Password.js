@@ -30,7 +30,12 @@ export default function Password() {
         const { token } = response.data;
         localStorage.setItem("token", token);
 
-        navigate("/dashboard");
+        if (username === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/dashboard");
+        }
+
         toast.success(<b>Login Successful...!</b>);
       } catch (error) {
         console.error("Error verifying password:", error);

@@ -33,6 +33,17 @@ export async function getAllUsers() {
   }
 }
 
+//getuserbyId
+export async function getUserById(userId) {
+  try {
+    const response = await axios.get(`/api/user/id/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    throw new Error("Failed to fetch user by ID");
+  }
+}
+
 //get userdetails
 export async function getUser({ username }) {
   try {

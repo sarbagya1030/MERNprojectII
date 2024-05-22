@@ -1,11 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/admin.module.css";
 import React, { useEffect, useState } from "react";
 import { getAllProducts } from "../helper/producthelper.js";
 
 export default function AdminDash({ productId }) {
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  function userLogout() {
+    localStorage.removeItem("token");
+
+    navigate("/");
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +80,11 @@ export default function AdminDash({ productId }) {
               >
                 Profile
               </a>
+            </li>
+            <li>
+              <button onClick={userLogout} className="text-purple-600">
+                Logout
+              </button>
             </li>
           </ul>
         </div>

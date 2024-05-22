@@ -19,6 +19,12 @@ import AdminDash from "./components/adminDash.js";
 import UpdateProduct from "./components/updateProduct.js";
 import DeleteProducts from "./components/delProduct.js";
 import DeleteUser from "./components/delUser.js";
+import ProductBuy from "./components/buy.js";
+import PaymentSuccess from "./components/paymentsuccess.js";
+import PaymentFailure from "./components/paymentfailure.js";
+import ProfileShow from "./components/userProfileshow.js";
+import AddReview from "./components/addReview.js";
+import ShowReview from "./components/showreview.js";
 
 //auth middleware
 import { AuthorizeUser, ProtectRoute } from "./middleware/auth.js";
@@ -113,6 +119,54 @@ const router = createBrowserRouter([
     element: (
       <>
         <DeleteUser />
+      </>
+    ),
+  },
+  {
+    path: "/buy",
+    element: (
+      <>
+        <ProductBuy />
+      </>
+    ),
+  },
+  {
+    path: "/success/:productId",
+    element: (
+      <>
+        <PaymentSuccess />
+      </>
+    ),
+  },
+  {
+    path: "/fail",
+    element: (
+      <>
+        <PaymentFailure />
+      </>
+    ),
+  },
+  {
+    path: "/profileshow/:username",
+    element: (
+      <>
+        <ProfileShow />
+      </>
+    ),
+  },
+  {
+    path: "/addreview/:productId",
+    element: (
+      <>
+        <AddReview />
+      </>
+    ),
+  },
+  {
+    path: "/showreview",
+    element: (
+      <>
+        <ShowReview />
       </>
     ),
   },

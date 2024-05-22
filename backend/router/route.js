@@ -19,6 +19,7 @@ router.route("/login").post(controller.verifyUser, controller.login); //login in
 //GET method
 router.route("/getusers").get(controller.getAllUsers);
 router.route("/user/:username").get(controller.getUser); //user with the username
+router.route("/user/id/:id").get(controller.getUserById); // User with the ID
 router
   .route("/generateOTP")
   .get(controller.verifyUser, localVariables, controller.generateOTP); //generate random  OTP

@@ -7,7 +7,7 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 export default function useFetch(query) {
   const [getData, setData] = useState({
     isLoading: false,
-    user_id: null, // Initialize user_id as null
+    user_id: null,
     apiData: undefined,
     status: null,
     serverError: null,
@@ -24,14 +24,13 @@ export default function useFetch(query) {
           ? await axios.get(`/api/user/${username}`)
           : await axios.get(`/api/${query}`);
 
-        // Update apiData with user_id
         const updatedData = { ...data, user_id: data._id };
 
         if (status === 201) {
           setData((prev) => ({
             ...prev,
             isLoading: false,
-            user_id: data._id, // Set user_id
+            user_id: data._id,
             apiData: updatedData,
             status: status,
           }));
