@@ -163,7 +163,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/showreview",
+    path: "/showreview/:productid",
     element: (
       <>
         <ShowReview />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAllProducts } from "../helper/producthelper.js";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+
 export default function ProductCard() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -149,7 +150,10 @@ export default function ProductCard() {
               >
                 Buy
               </button>
-              <a href="/showreview" className="pt-2 flex justify-start">
+              <a
+                href={`/showreview/${product._id}`}
+                className="pt-2 flex justify-start"
+              >
                 View Review
               </a>
             </div>

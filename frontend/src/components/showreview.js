@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import styles from "../styles/Username.module.css";
 import { getReviewsByProductId } from "../helper/producthelper";
-import axios from "axios";
+import { getUserById } from "../helper/helper.js";
 
 export default function ShowReview() {
+  const { productid } = useParams();
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const productId = "your_product_id"; // Replace "your_product_id" with the actual product id
-        const reviews = await getReviewsByProductId(productId);
-        setReviews(reviews);
+        const allReviews = await getReviewsByProductId(productid);
+        const reviewsWithUserInfo = await Promise.all(
+          allReviews.map(async (review) => {
+            const user = await getUserById(review.userId);
+            return { ...review, user };
+          })
+        );
+        setReviews(reviewsWithUserInfo);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }
     };
 
     fetchReviews();
-  }, []);
+  }, [productid]);
 
   return (
     <div className="container mx-auto">
@@ -31,18 +37,20 @@ export default function ShowReview() {
           </div>
           {reviews.map((review) => (
             <div
-              key={review._id} // Assuming MongoDB assigns the id to _id
+              key={review._id}
               className="bg-white shadow-md rounded-md p-4 mb-4"
             >
-              <div className="flex items-center mb-2">
+              <div className="flex items-center mb-4">
                 <img
-                  src={review.userPicture}
-                  alt={review.userName}
-                  className="w-12 h-12 rounded-full mr-2"
+                  src={review.user.profile}
+                  alt={review.user.username}
+                  className="w-12 h-12 rounded-full mr-4"
                 />
-                <span className="font-bold">{review.userName}</span>
+                <span className="font-bold text-lg">
+                  {review.user.username}
+                </span>
               </div>
-              <p>{review.reviewContent}</p>
+              <p className="text-gray-700 mb-4">{review.review}</p>
             </div>
           ))}
 
